@@ -33,17 +33,16 @@ public class PrintCalendar {
 
 	private static void printDays(int month, int year, DayOfWeek firstDayOfWeek) {
 	    int nDays = getMonthDays(month, year);
-	    int currentWeekDay = getFirstMonthWeekDay(month, year);
-	   
-	    System.out.printf("%s", " ".repeat(getFirstColumnOffset(currentWeekDay)));
-		for(int day = 1; day <= nDays; day++) {
-			System.out.printf("%4d", day);
-			
-			if (currentWeekDay == 7) {
-				currentWeekDay = 0;
-				System.out.println();
-			}
-			currentWeekDay++;
+	    LocalDate firstDayOfMonth = LocalDate.of(year, month, 1);
+	    int dayOfWeekValue = firstDayOfMonth.getDayOfWeek().getValue();
+	    int offset = (dayOfWeekValue-firstDayOfWeek.getValue()   + 7) % 7;
+	    System.out.printf("%s", " ".repeat(offset * COLUMN_WIDTH));
+	    for (int day = 1; day <= nDays; day++) {
+	        System.out.printf("%4d", day);
+
+	        if ((offset + day ) % 7 == 0) {
+	            System.out.println();
+	        }
 	    }
 	}
 
